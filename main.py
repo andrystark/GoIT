@@ -1,6 +1,7 @@
 import pygame 
-import random  # Додавання модуля random для використання функції random.choice
+import random
 from pygame.constants import QUIT, K_DOWN, K_UP, K_LEFT, K_RIGHT
+
 pygame.init()
 
 HEIGHT = 800
@@ -10,8 +11,7 @@ main_display = pygame.display.set_mode((WIDTH, HEIGHT))
 player_size = (20, 20)
 
 player = pygame.Surface(player_size)
-COLOR_WHITE = (255, 255, 255)  # Білий колір*
-
+COLOR_WHITE = (255, 255, 255)
 player.fill(COLOR_WHITE)
 player_rect = player.get_rect()
 
@@ -22,26 +22,28 @@ while playing:
         if event.type == pygame.QUIT:
             playing = False
 
-    # Оновлення позиції гравця
-    player_rect = player_rect.move([1, 1])  # Змінено на рух вправо та вниз
+    keys = pygame.key.get_pressed()
 
-    # Обробка переходу гравця на протилежний бік, якщо він виходить за межі вікна
-    if player_rect.bottom >= HEIGHT or player_rect.top <= 0:
-        player_speed = random.choice(([1, 1], [-1, 1]))  # Змінено на зміну напрямку вгору та вниз
+    player_speed = 5
 
-    if player_rect.right >= WIDTH or player_rect.left <= 0:
-        player_speed = random.choice(([1, 1], [1, -1]))  # Змінено на зміну напрямку вправо та вліво
+    if keys[K_DOWN] and player_rect.bottom < HEIGHT:
+        player_rect = player_rect.move(0, player_speed)
+
+    if keys[K_UP] and player_rect.top > 0:
+        player_rect = player_rect.move(0, -player_speed)
+
+    if keys[K_LEFT] and player_rect.left > 0:
+        player_rect = player_rect.move(-player_speed, 0)
+
+    if keys[K_RIGHT] and player_rect.right < WIDTH:
+        player_rect = player_rect.move(player_speed, 0)
 
     main_display.fill((0, 0, 0))
     main_display.blit(player, player_rect)
 
-    keys = pygame.key.get_pressed()
-
-if keys[pygame.K_DOWN]:
-
-    player_rect = player_rect.move([0, 1])
-
-
     pygame.display.flip()
 
-    pygame.time.Clock().tick(120)
+    pygame.time.Clock().tick(60)
+
+# Закриття вікна та виход з програми при натисканні "X" на вікні
+pygame.quit()
