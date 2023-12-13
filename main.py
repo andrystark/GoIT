@@ -35,6 +35,13 @@ while playing:
     main_display.fill((0, 0, 0))
     main_display.blit(player, player_rect)
 
+    keys = pygame.key.get_pressed()
+
+if keys[pygame.K_DOWN]:
+
+    player_rect = player_rect.move([0, 1])
+
+
     pygame.display.flip()
 
     pygame.time.Clock().tick(120)
