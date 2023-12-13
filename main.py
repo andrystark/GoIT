@@ -1,6 +1,6 @@
-import pygame
+import pygame 
 import random  # Додавання модуля random для використання функції random.choice
-
+from pygame.constants import QUIT, K_DOWN, K_UP, K_LEFT, K_RIGHT
 pygame.init()
 
 HEIGHT = 800
