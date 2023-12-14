@@ -1,4 +1,4 @@
-import pygame 
+import pygame
 import random
 from pygame.constants import QUIT, USEREVENT, K_DOWN, K_UP, K_LEFT, K_RIGHT
 
@@ -10,12 +10,9 @@ WIDTH = 1200
 main_display = pygame.display.set_mode((WIDTH, HEIGHT))
 bg = pygame.transform.scale(pygame.image.load('background.png'), (WIDTH, HEIGHT))
 player_size = (20, 20)
-bg = pygame.transform.scale(pygame.image.load('background.png'), (WIDTH, HEIGHT))
 
 bg_X1 = 0
-
 bg_X2 = bg.get_width()
-
 bg_move = 3
 
 player = pygame.Surface(player_size)
@@ -68,6 +65,20 @@ while playing:
         player_rect = player_rect.move(player_speed, 0)
 
     main_display.fill((0, 0, 0))
+
+    # Draw the background
+    bg_X1 -= bg_move
+    bg_X2 -= bg_move
+
+    if bg_X1 < -bg.get_width():
+        bg_X1 = bg.get_width()
+
+    if bg_X2 < -bg.get_width():
+        bg_X2 = bg.get_width()
+
+    main_display.blit(bg, (bg_X1, 0))
+    main_display.blit(bg, (bg_X2, 0))
+
     main_display.blit(player, player_rect)
 
     for enemy in enemies:
@@ -79,26 +90,12 @@ while playing:
             playing = False
 
     # Display score
-    main_display.blit(bg, (0, 0))
-
-    # Check if player collects bonuses (you need to add bonus handling code)
-    # if player_rect.colliderect(bonus[1]):
-    #     score += 1
-    #     bonuses.pop(bonuses.index(bonus))  
+    main_display.blit(FONT.render(f"Score: {score}", True, COLOR_WHITE), (WIDTH-100, 20))
 
     # Check if enemies go off the screen
     for enemy in enemies[:]:
         if enemy[1].left < 0:
             enemies.pop(enemies.index(enemy))
-    # main_display.fill(COLOR_BlACK)
-
-        bg_X1 -= bg_move
-
-    bg_X2 -= bg_move
-
-    main_display.blit(bg, (bg_X1, 0))
-
-    main_display.blit(bg, (bg_X2, 0))        
 
     pygame.display.flip()
 
